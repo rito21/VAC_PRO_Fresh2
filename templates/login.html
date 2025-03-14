@@ -1,39 +1,24 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <title>Inicia sessió</title>
-</head>
-<body>
-    <h1>Inicia sessió</h1>
-    <form id="loginForm" method="POST" action="/login/">
-        <label>Email: <input type="email" name="username" required></label><br>
-        <label>Contrasenya: <input type="password" name="password" required></label><br>
-        <button type="submit">Inicia sessió</button>
-    </form>
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            try {
-                const response = await fetch('/login/', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                if (response.ok) {
-                    localStorage.setItem('token', result.access_token);
-                    console.log('Token guardado:', localStorage.getItem('token'));
-                    alert('Sessió iniciada amb èxit!');
-                    window.location.href = '/protected/';
-                } else {
-                    alert('Error al iniciar sessió: ' + (result.detail || 'Desconegut'));
-                }
-            } catch (error) {
-                console.error('Error en login:', error);
-                alert('Error de connexió: ' + error.message);
-            }
-        });
-    </script>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}
+    {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="content">
+        <h1>
+            {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
+        </h1>
+        <form method="post" action="/login/">
+            <label for="correu_electronic">
+                {% if lang == "ca" %}Correu electrònic{% else %}Correo electrónico{% endif %}
+            </label>
+            <input type="email" id="correu_electronic" name="correu_electronic" required>
+            <label for="contrasenya">
+                {% if lang == "ca" %}Contrasenya{% else %}Contraseña{% endif %}
+            </label>
+            <input type="password" id="contrasenya" name="contrasenya" required>
+            <button type="submit" class="btn">
+                {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
+            </button>
+        </form>
+    </div>
+{% endblock %}

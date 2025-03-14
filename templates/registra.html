@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Registra't{% endblock %}
+{% block content %}
+    <h1>Registra't</h1>
+    <form method="post" action="/signup/">
+        <label for="correu_electronic">Correu electrònic</label>
+        <input type="email" id="correu_electronic" name="correu_electronic" required>
+        <label for="contrasenya">Contrasenya</label>
+        <input type="password" id="contrasenya" name="contrasenya" required>
+        <label for="confirmar_contrasenya">Confirmar contrasenya</label>
+        <input type="password" id="confirmar_contrasenya" name="confirmar_contrasenya" required>
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" required>
+        <label for="cognoms">Cognoms</label>
+        <input type="text" id="cognoms" name="cognoms" required>
+        <button type="submit" class="btn">Registra't</button>
+    </form>
+{% endblock %}

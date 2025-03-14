@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Serveis{% endblock %}
+{% block content %}
+    <h1>
+        {% if lang == "ca" %}Els nostres Serveis{% else %}Nuestros Servicios{% endif %}
+    </h1>
+    <p>
+        {% if lang == "ca" %}
+            A VAC, oferim serveis especialitzats en el registre i anàlisi de dades ambientals per a empreses i particulars a Vilafranca del Penedès, Catalunya. Els nostres serveis inclouen:
+        {% else %}
+            En VAC, ofrecemos servicios especializados en el registro y análisis de datos ambientales para empresas y particulares en Vilafranca del Penedès, Cataluña. Nuestros servicios incluyen:
+        {% endif %}
+    </p>
+    <ul style="text-align: left; display: inline-block;">
+        {% if lang == "ca" %}
+            <li>Monitoratge de la pressió atmosfèrica cada 3 hores.</li>
+            <li>Anàlisi de la humitat ambiental.</li>
+            <li>Seguiment de la temperatura amb actualitzacions periòdiques.</li>
+            <li>Informes personalitzats per a la gestió ambiental.</li>
+        {% else %}
+            <li>Monitoreo de la presión atmosférica cada 3 horas.</li>
+            <li>Análisis de la humedad ambiental.</li>
+            <li>Seguimiento de la temperatura con actualizaciones periódicas.</li>
+            <li>Informes personalizados para la gestión ambiental.</li>
+        {% endif %}
+    </ul>
+    <p>
+        {% if lang == "ca" %}
+            Contacta'ns per obtenir més informació o registra't per començar a utilitzar els nostres serveis!
+        {% else %}
+            ¡Contáctanos para obtener más información o regístrate para comenzar a utilizar nuestros servicios!
+        {% endif %}
+    </p>
+    <a href="/signup/" class="btn">
+        {% if lang == "ca" %}Registra't{% else %}Regístrate{% endif %}
+    </a>
+{% endblock %}

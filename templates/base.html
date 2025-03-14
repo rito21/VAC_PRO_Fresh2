@@ -1,73 +1,62 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VAC - {% block title %}{% endblock %}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        header nav a {
-            color: white;
-            margin-left: 1rem;
-            text-decoration: none;
-        }
-        header nav a:hover {
-            text-decoration: underline;
-        }
-        .content {
-            flex: 1;
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-        }
-    </style>
+    <title>{% block title %} - VAC PRO{% endblock %}</title>
+    <link rel="stylesheet" href="/static/assets/css/main.css">
 </head>
 <body>
-    <!-- Cabecera (Header) -->
-    <header>
-        <div class="logo">VAC</div>
-        <nav>
-            <a href="/">Inici</a>
-            <a href="/signup/">Registra't</a>
-            <a href="/login/">Iniciar Sessió</a>
+<header>
+    <div class="header-content">
+        <img src="/static/assets/images/logo.png" alt="VAC Logo" class="logo">
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="/">Inici</a></li>
+                {% if current_user %}
+                    <!-- Enlaces visibles solo para usuarios autenticados -->
+                    <li><a href="/serveis/">
+                        {% if lang == "ca" %}Serveis{% else %}Servicios{% endif %}
+                    </a></li>
+                    <li><a href="/contacte/">
+                        {% if lang == "ca" %}Contacte{% else %}Contacto{% endif %}
+                    </a></li>
+                    <li><a href="/registra/">
+                        {% if lang == "ca" %}Registra{% else %}Registrar{% endif %}
+                    </a></li>
+                    <li><a href="/devices/">
+                        {% if lang == "ca" %}Dispositius{% else %}Dispositivos{% endif %}
+                    </a></li>
+                    <li><a href="/protected/">
+                        {% if lang == "ca" %}Àrea Protegida{% else %}Área Protegida{% endif %}
+                    </a></li>
+                    <li><a href="/logout/">
+                        {% if lang == "ca" %}Tanca sessió{% else %}Cerrar sesión{% endif %}
+                    </a></li>
+                {% else %}
+                    <!-- Enlaces visibles para usuarios no autenticados -->
+                    <li><a href="/login/">
+                        {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
+                    </a></li>
+                    <li><a href="/signup/">
+                        {% if lang == "ca" %}Registra't{% else %}Regístrate{% endif %}
+                    </a></li>
+                {% endif %}
+            </ul>
         </nav>
-    </header>
+    </div>
+</header>
 
-    <!-- Contenido dinámico -->
-    <main class="content">
-        {% block content %}
-        {% endblock %}
-    </main>
+<main>
+    {% block content %}{% endblock %}
+</main>
 
-    <!-- Pie de página (Footer) -->
-    <footer>
-        <p>&copy; 2025 VAC - Serveis de consulta i registre de dispositius meteorològics (humitat, temperatura, i més).</p>
-        <p>Contacte: info@vac.cat | Tel: 123-456-789</p>
-    </footer>
+<footer>
+    {% if lang == "ca" %}
+    <p>© 2023 VAC - Vilafranca del Penedès, Catalunya | Tots els drets reservats</p>
+    {% else %}
+    <p>© 2023 VAC - Vilafranca del Penedès, Cataluña | Todos los derechos reservados</p>
+    {% endif %}
+</footer>
 </body>
 </html>

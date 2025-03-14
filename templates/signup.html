@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Registra't{% endblock %}
+{% block content %}
+    <h1>
+        {% if lang == "ca" %}Registra't{% else %}Regístrate{% endif %}
+    </h1>
+    <form id="signupForm" method="POST" action="/signup/">
+        <label>
+            {% if lang == "ca" %}Email:{% else %}Correo:{% endif %}
+            <input type="email" name="correu_electronic" required>
+        </label><br>
+        <label>
+            {% if lang == "ca" %}Contrasenya:{% else %}Contraseña:{% endif %}
+            <input type="password" name="contrasenya" required>
+        </label><br>
+        <label>
+            {% if lang == "ca" %}Confirma contrasenya:{% else %}Confirma contraseña:{% endif %}
+            <input type="password" name="confirmar_contrasenya" required>
+        </label><br>
+        <label>
+            {% if lang == "ca" %}Nom:{% else %}Nombre:{% endif %}
+            <input type="text" name="nom" required>
+        </label><br>
+        <label>
+            {% if lang == "ca" %}Cognoms:{% else %}Apellidos:{% endif %}
+            <input type="text" name="cognoms" required>
+        </label><br>
+        <button type="submit" class="btn">
+            {% if lang == "ca" %}Registra't{% else %}Regístrate{% endif %}
+        </button>
+    </form>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            try {
+                const response = await fetch('/signup/', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    alert('{% if lang == "ca" %}Usuari creat amb èxit!{% else %}¡Usuario creado con éxito!{% endif %}');
+                    window.location.href = '/login/';
+                } else {
+                    alert('{% if lang == "ca" %}Error al registrar:{% else %}Error al registrar:{% endif %}' + (result.detail || 'Desconegut'));
+                }
+            } catch (error) {
+                console.error('Error en signup:', error);
+                alert('{% if lang == "ca" %}Error de connexió:{% else %}Error de conexión:{% endif %}' + error.message);
+            }
+        });
+    </script>
+{% endblock %}

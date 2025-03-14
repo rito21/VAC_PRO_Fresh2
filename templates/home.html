@@ -1,11 +1,25 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <title>Benvingut</title>
-</head>
-<body>
-    <h1>Benvingut</h1>
-    <a href="/login/">Inicia sessió</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}
+    {% if lang == "ca" %}Benvingut{% else %}Bienvenido{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="content">
+        <h1>
+            {% if lang == "ca" %}
+                Registreu l'Anàlisi de Dades Ambientals amb VAC
+            {% else %}
+                Registre los Análisis de Datos Ambientales con VAC
+            {% endif %}
+        </h1>
+        <p>
+            {% if lang == "ca" %}
+                Som una empresa local a Vilafranca del Penedès, Catalunya, que registra anàlisis ambientals (pressió atmosfèrica, humitat, temperatura) analitzades amb teus dispositius actualitzades cada 3 hores.
+            {% else %}
+                Somos una empresa local en Vilafranca del Penedès, Cataluña, que registra análisis ambientales (presión atmosférica, humedad, temperatura) analizados con tus dispositivos actualizados cada 3 horas.
+            {% endif %}
+        </p>
+        <a href="/signup/" class="btn">
+            {% if lang == "ca" %}Registra't ara{% else %}Regístrate ahora{% endif %}
+        </a>
+    </div>
+{% endblock %}

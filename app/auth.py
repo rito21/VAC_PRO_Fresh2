@@ -11,7 +11,7 @@ from passlib.context import CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Configuración JWT
-SECRET_KEY = "tu_secreto_aqui"  # Cambia esto por una clave segura en producción
+SECRET_KEY = "8fe87ab237c9f1f87f985078c1aef58c17aca40f68c649d029e9c3bcefe67f83"  # Cambia esto por una clave segura en producción
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

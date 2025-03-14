@@ -1,40 +1,20 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <title>Àrea Protegida</title>
-</head>
-<body>
-    <h1 id="welcomeMessage"></h1>
-    <a href="/" onclick="localStorage.removeItem('token'); alert('Sessió tancada'); window.location.href='/'; return false;">Tanca sessió</a>
+{% extends "base.html" %}
+{% block title %}Àrea Protegida{% endblock %}
+{% block content %}
+    <h1 id="welcomeMessage">Carregant...</h1>
+    <a href="/" onclick="localStorage.removeItem('token'); alert('{% if lang == "ca" %}Sessió tancada{% else %}Sesión cerrada{% endif %}'); window.location.href='/'; return false;" class="btn">
+        {% if lang == "ca" %}Tanca sessió{% else %}Cerrar sesión{% endif %}
+    </a>
     <script>
         console.log('Script iniciado en protected.html');
 
-        async function waitForToken(maxWaitTime = 15000, interval = 500) {
-            const startTime = Date.now();
-            while (Date.now() - startTime < maxWaitTime) {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    console.log('Token encontrado:', token);
-                    return token;
-                }
-                console.log('Token no encontrado, esperando... (Tiempo restante: ' + ((maxWaitTime - (Date.now() - startTime)) / 1000) + 's)');
-                await new Promise(resolve => setTimeout(resolve, interval));
-            }
-            console.error('Tiempo máximo de espera alcanzado: No se encontró el token');
-            throw new Error('Tiempo máximo de espera alcanzado: No se encontró el token');
-        }
-
-        async function fetchProtectedData(token) {
+        async function fetchProtectedData() {
             try {
                 const response = await fetch('/api/protected/', {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    credentials: 'include' // Asegura que se envíen las cookies
                 });
                 console.log('Respuesta del servidor:', response.status, response.statusText);
-                console.log('Headers enviados:', { 'Authorization': `Bearer ${token}` });
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Detalles del error:', errorText);
@@ -45,26 +25,14 @@
                 document.getElementById('welcomeMessage').textContent = data.message;
             } catch (error) {
                 console.error('Error en la solicitud:', error);
-                alert('Error d\'autenticació: ' + error.message);
-                localStorage.removeItem('token');
+                alert('{% if lang == "ca" %}Error d\'autenticació:{% else %}Error de autenticación:{% endif %}' + error.message);
                 window.location.href = '/login/';
             }
         }
 
-        (async () => {
-            try {
-                const token = await waitForToken();
-                if (token) {
-                    await fetchProtectedData(token);
-                } else {
-                    throw new Error('Token no disponible');
-                }
-            } catch (error) {
-                console.error('Error al esperar el token o procesar la solicitud:', error);
-                alert('Error: ' + error.message);
-                window.location.href = '/login/';
-            }
-        })();
+        // Ejecutar la solicitud al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProtectedData();
+        });
     </script>
-</body>
-</html>
+{% endblock %}

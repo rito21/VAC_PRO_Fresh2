@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Contacte - VAC{% endblock %}
+
+{% block content %}
+    <section class="contact-page">
+        <h1>Contacta amb nosaltres</h1>
+        <p>Estem a Vilafranca del Penedès, Catalunya, i estem aquí per ajudar-te amb el registre i anàlisi de les teves dades ambientals.</p>
+        <div class="contact-info">
+            <h3>Informació de contacte</h3>
+            <p><strong>Adreça:</strong> Carrer de l'Exemple, 123, Vilafranca del Penedès, Catalunya</p>
+            <p><strong>Email:</strong> info@vacfranca.com</p>
+            <p><strong>Telèfon:</strong> +34 123 456 789</p>
+        </div>
+        <div class="contact-form">
+            <h3>Envia'ns un missatge</h3>
+            <form action="/contacte" method="post">
+                <label for="name">Nom:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Missatge:</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit" class="cta-button">Enviar</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}
