@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAC - {% block title %}{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        header nav a {
+            color: white;
+            margin-left: 1rem;
+            text-decoration: none;
+        }
+        header nav a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera (Header) -->
+    <header>
+        <div class="logo">VAC</div>
+        <nav>
+            <a href="/">Inici</a>
+            <a href="/signup/">Registra't</a>
+            <a href="/login/">Iniciar Sessió</a>
+        </nav>
+    </header>
+
+    <!-- Contenido dinámico -->
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Pie de página (Footer) -->
+    <footer>
+        <p>&copy; 2025 VAC - Serveis de consulta i registre de dispositius meteorològics (humitat, temperatura, i més).</p>
+        <p>Contacte: info@vac.cat | Tel: 123-456-789</p>
+    </footer>
+</body>
+</html>
