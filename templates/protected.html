@@ -8,11 +8,13 @@
     <script>
         console.log('Script iniciado en protected.html');
 
-        async function fetchProtectedData() {
+        async function fetchProtectedData(token) {
             try {
                 const response = await fetch('/api/protected/', {
                     method: 'GET',
-                    credentials: 'include' // Asegura que se envíen las cookies
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
                 console.log('Respuesta del servidor:', response.status, response.statusText);
                 if (!response.ok) {
@@ -25,14 +27,21 @@
                 document.getElementById('welcomeMessage').textContent = data.message;
             } catch (error) {
                 console.error('Error en la solicitud:', error);
-                alert('{% if lang == "ca" %}Error d\'autenticació:{% else %}Error de autenticación:{% endif %}' + error.message);
+                alert('{% if lang == "ca" %}Error d\'autenticació: {% else %}Error de autenticación: {% endif %}' + error.message);
+                localStorage.removeItem('token');
                 window.location.href = '/login/';
             }
         }
 
-        // Ejecutar la solicitud al cargar la página
+        // Obtener el token almacenado y hacer la solicitud
         document.addEventListener('DOMContentLoaded', () => {
-            fetchProtectedData();
+            const token = localStorage.getItem('token');
+            if (token) {
+                fetchProtectedData(token);
+            } else {
+                alert('{% if lang == "ca" %}No hi ha token d\'autenticació{% else %}No authentication token{% endif %}');
+                window.location.href = '/login/';
+            }
         });
     </script>
 {% endblock %}

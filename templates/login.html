@@ -1,24 +1,61 @@
 {% extends "base.html" %}
-{% block title %}
-    {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
-{% endblock %}
+{% block title %}Inicia sessió{% endblock %}
 {% block content %}
-    <div class="content">
-        <h1>
-            {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
-        </h1>
-        <form method="post" action="/login/">
-            <label for="correu_electronic">
-                {% if lang == "ca" %}Correu electrònic{% else %}Correo electrónico{% endif %}
-            </label>
-            <input type="email" id="correu_electronic" name="correu_electronic" required>
-            <label for="contrasenya">
-                {% if lang == "ca" %}Contrasenya{% else %}Contraseña{% endif %}
-            </label>
-            <input type="password" id="contrasenya" name="contrasenya" required>
-            <button type="submit" class="btn">
-                {% if lang == "ca" %}Inicia sessió{% else %}Iniciar sesión{% endif %}
-            </button>
-        </form>
-    </div>
+    <h1>Inicia sessió</h1>
+    <form method="post" action="/login/" id="loginForm">
+        <label for="correu_electronic">Correu electrònic</label>
+        <input type="email" id="correu_electronic" name="correu_electronic" required>
+        <label for="contrasenya">Contrasenya</label>
+        <input type="password" id="contrasenya" name="contrasenya" required>
+        <button type="submit" class="btn">Inicia sessió</button>
+    </form>
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const form = document.querySelector('#loginForm');
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('/login/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json' // Especificar que esperamos JSON
+                    }
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error en login:', errorText);
+                    if (errorText.includes('<!DOCTYPE html')) {
+                        alert('{% if lang == "ca" %}Error: La resposta no és vàlida. Torna-ho a intentar.{% else %}Error: Invalid response. Please try again.{% endif %}');
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.detail || 'Error al iniciar sessió');
+                    }
+                    return;
+                }
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    throw new Error('Resposta no és JSON: ' + text.substring(0, 50));
+                }
+                const data = await response.json();
+                if (data.access_token) {
+                    localStorage.setItem('token', data.access_token);
+                    window.location.href = '/protected/';
+                } else {
+                    throw new Error('No se recibió token de autenticación');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('{% if lang == "ca" %}Error d\'autenticació: {% else %}Error de autenticación: {% endif %}' + error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.querySelector('#loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+        });
+    </script>
 {% endblock %}
